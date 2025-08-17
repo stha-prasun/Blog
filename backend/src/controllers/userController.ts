@@ -27,7 +27,7 @@ export const signup = async (
       });
     }
 
-    const user: IUser | null = await User.findOne({ username });
+    const user = await User.findOne({ username });
 
     if (user) {
       return res.status(400).json({
@@ -130,7 +130,7 @@ export const login = async (
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      message: "Something went wrong",
+      message: "Internal Server Error",
       success: false,
     });
   }
