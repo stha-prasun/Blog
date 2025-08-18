@@ -57,3 +57,39 @@ export const getAllBlogs = async (
     });
   }
 };
+
+export const getBlogById = async (
+  req: Request<{ id: string }, {}, {}>,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({
+        message: "Id not found",
+        success: false,
+      });
+    }
+
+    const blog = await Blog.findById(id);
+
+    if (!blog) {
+      return res.status(404).json({
+        message: "Blog not found",
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      blog,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal server error",
+      success: false,
+    });
+  }
+};
