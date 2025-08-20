@@ -95,11 +95,18 @@ export const getBlogById = async (
 };
 
 export const deleteBlog = async (
-  req: Request<{id: string}, {}, {}>,
+  req: Request<{ id: string }, {}, {}>,
   res: Response
 ): Promise<Response> => {
   try {
     const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({
+        message: "Id not found",
+        success: false,
+      });
+    }
 
     const blog = await Blog.findByIdAndDelete(id);
 
@@ -112,6 +119,48 @@ export const deleteBlog = async (
 
     return res.status(200).json({
       message: "Blog deleted successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal server error",
+      success: false,
+    });
+  }
+};
+
+export const editBlog = async (
+  req: Request<{ id: string }, {}, { title?: string; blog?: string }>,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { title, blog } = req.body;
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({
+        message: "Id not found",
+        success: false,
+      });
+    }
+
+    const blog_by_id = await Blog.findById(id);
+
+    if (!blog_by_id) {
+      return res.status(404).json({
+        message: "No Blog Found",
+        success: false,
+      });
+    }
+
+    if (title) blog_by_id.title = title;
+    if (blog) blog_by_id.blog = blog;
+
+    await blog_by_id.save();
+
+    return res.status(200).json({
+      message: "Edit Successfully",
       success: true,
     });
   } catch (error) {
