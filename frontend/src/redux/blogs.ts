@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-export interface Blog {
+interface Blog {
   _id: string;
   title: string;
   blog: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface BlogState {
