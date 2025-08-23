@@ -6,14 +6,12 @@ const Navbar = () => {
       {/* Logo */}
       <div className="flex items-center space-x-2 font-bold text-lg">
         <span className="text-blue-600">∞</span>
-        <span>enjooy</span>
+        <span>Blogs</span>
       </div>
 
       {/* Links */}
       <div className="flex space-x-6">
         <a href="#" className="hover:text-blue-600">Home</a>
-        <a href="#" className="hover:text-blue-600">Blog</a>
-        <a href="#" className="hover:text-blue-600">Service</a>
         <a href="#" className="hover:text-blue-600">About</a>
         <a href="#" className="hover:text-blue-600">Contact</a>
       </div>
