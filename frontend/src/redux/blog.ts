@@ -10,18 +10,18 @@ interface Blog {
 }
 
 interface BlogState {
-  blog: Blog[];
+  blog: Blog | null;
 }
 
 const initialState: BlogState = {
-  blog: [],
+  blog: null,
 };
 
 const blogSlice = createSlice({
   name: "blog",
   initialState,
   reducers: {
-    setBlog: (state, action: PayloadAction<Blog[]>) => {
+    setBlog: (state, action: PayloadAction<Blog>) => {
       state.blog = action.payload;
     },
   },
