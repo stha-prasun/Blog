@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./components/Home";
 import Blog from "./components/Blog";
 import AdminLogin from "./components/admin/AdminLogin";
+import AdminPanel from "./components/admin/AdminPanel";
 
 const App = () => {
   const appRouter = createBrowserRouter([
@@ -16,6 +17,10 @@ const App = () => {
     {
       path: "/admin",
       element: <AdminLogin />,
+    },
+    {
+      path: "/admin/home",
+      element: <AdminPanel />,
     },
   ]);
 

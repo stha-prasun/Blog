@@ -23,7 +23,7 @@ export default function AdminLogin() {
       );
       if (res.data.success) {
         dispatch(setLoggedInUser(res.data.loggedInUser));
-        navigate("/");
+        navigate("/admin/home");
         toast.success(res.data.message);
       }
     } catch (error: any) {
