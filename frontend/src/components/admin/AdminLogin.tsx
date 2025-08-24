@@ -1,12 +1,35 @@
+import axios from "axios";
 import { useState } from "react";
+import { USER_API_ENDPOINT } from "../../utils/constants";
+import { setLoggedInUser } from "../../redux/user";
+import { useAppDispatch } from "../../redux/hooks";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function AdminLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login attempt:", { username, password });
+    try {
+      const res = await axios.post(
+        `${USER_API_ENDPOINT}/login`,
+        { username, password },
+        { withCredentials: true }
+      );
+      if (res.data.success) {
+        dispatch(setLoggedInUser(res.data.loggedInUser));
+        navigate("/");
+        toast.success(res.data.message);
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
   };
 
   return (
