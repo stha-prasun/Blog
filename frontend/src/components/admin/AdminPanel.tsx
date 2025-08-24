@@ -2,18 +2,25 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { setLoggedInUser } from "../../redux/user";
 import { useEffect } from "react";
+import useGetAllBlogs from "../../hooks/useGetAllBlogs";
 
 const AdminPanel = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const user = useAppSelector((store) => store.User.loggedInUser);
+  const fetchBlogs = useGetAllBlogs();
 
   useEffect(() => {
     if (!user) {
       navigate("/admin");
+      return;
+    } else {
+      fetchBlogs();
     }
-  }, [user]);
+  }, [user, navigate, fetchBlogs]);
+
+  const blogs = useAppSelector((store) => store.Blogs.blogs);
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -49,6 +56,49 @@ const AdminPanel = () => {
             Logged in as: <span className="font-medium">{user?.username}</span>
           </div>
         </header>
+
+        {/* Blog List */}
+        <section>
+          <h3 className="text-xl font-semibold mb-4">All Blogs</h3>
+          {blogs.length === 0 ? (
+            <p className="text-gray-500">No blogs available.</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full border border-gray-200 rounded-lg shadow-sm">
+                <thead>
+                  <tr className="bg-gray-100 text-left text-gray-700">
+                    <th className="p-3 border-b">Title</th>
+                    <th className="p-3 border-b">Author</th>
+                    <th className="p-3 border-b">Date</th>
+                    <th className="p-3 border-b">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {blogs.map((blog) => (
+                    <tr
+                      key={blog._id}
+                      className="hover:bg-gray-50 transition-colors"
+                    >
+                      <td className="p-3 border-b">{blog.title}</td>
+                      <td className="p-3 border-b">Admin</td>
+                      <td className="p-3 border-b">
+                        {new Date(blog.createdAt).toLocaleDateString()}
+                      </td>
+                      <td className="p-3 border-b space-x-2">
+                        <button className="px-3 py-1 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600">
+                          Edit
+                        </button>
+                        <button className="px-3 py-1 bg-red-500 text-white rounded-md text-sm hover:bg-red-600">
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
       </main>
     </div>
   );
