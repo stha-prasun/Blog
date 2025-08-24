@@ -3,6 +3,7 @@ import Home from "./components/Home";
 import Blog from "./components/Blog";
 import AdminLogin from "./components/admin/AdminLogin";
 import AdminPanel from "./components/admin/AdminPanel";
+import AddBlog from "./components/admin/AddBlog";
 
 const App = () => {
   const appRouter = createBrowserRouter([
@@ -21,6 +22,10 @@ const App = () => {
     {
       path: "/admin/home",
       element: <AdminPanel />,
+    },
+    {
+      path: "/admin/blog/add",
+      element: <AddBlog />,
     },
   ]);
 

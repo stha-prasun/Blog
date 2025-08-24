@@ -34,7 +34,7 @@ const AdminPanel = () => {
           <button className="w-full text-left p-2 rounded-lg hover:bg-gray-100 font-medium">
             📊 Dashboard
           </button>
-          <button className="w-full text-left p-2 rounded-lg hover:bg-gray-100 font-medium">
+          <button onClick={()=>navigate("/admin/blog/add")} className="w-full text-left p-2 rounded-lg hover:bg-gray-100 font-medium">
             📝 Add Blogs
           </button>
         </nav>
