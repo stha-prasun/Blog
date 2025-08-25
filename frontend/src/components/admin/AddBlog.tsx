@@ -1,10 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { BLOG_API_ENDPOINT } from "../../utils/constants";
 import toast from "react-hot-toast";
 import AdminSideBar from "./AdminSideBar";
+import { useAppSelector } from "../../redux/hooks";
+import { useNavigate } from "react-router-dom";
 
 const AddBlog = () => {
+  const user = useAppSelector((store) => store.User.loggedInUser);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/admin");
+    }
+  }, [user]);
+
   const [title, setTitle] = useState("");
   const [blog, setBlog] = useState("");
 
