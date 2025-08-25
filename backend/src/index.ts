@@ -5,6 +5,7 @@ import cors from "cors";
 import { CorsOptions } from "cors";
 import userRoute from "./routes/userRoutes";
 import blogRoute from "./routes/blogRoutes";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ const app: Application = express();
 //middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
 
 //cors
 const corsOption: CorsOptions = {
