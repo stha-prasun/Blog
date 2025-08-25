@@ -34,7 +34,10 @@ const AdminPanel = () => {
           <button className="w-full text-left p-2 rounded-lg hover:bg-gray-100 font-medium">
             📊 Dashboard
           </button>
-          <button onClick={()=>navigate("/admin/blog/add")} className="w-full text-left p-2 rounded-lg hover:bg-gray-100 font-medium">
+          <button
+            onClick={() => navigate("/admin/blog/add")}
+            className="w-full text-left p-2 rounded-lg hover:bg-gray-100 font-medium"
+          >
             📝 Add Blogs
           </button>
         </nav>
@@ -85,7 +88,12 @@ const AdminPanel = () => {
                         {new Date(blog.createdAt).toLocaleDateString()}
                       </td>
                       <td className="p-3 border-b space-x-2">
-                        <button className="px-3 py-1 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600">
+                        <button
+                          onClick={() => {
+                            navigate(`/admin/blog/edit/${blog._id}`);
+                          }}
+                          className="px-3 py-1 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600"
+                        >
                           Edit
                         </button>
                         <button className="px-3 py-1 bg-red-500 text-white rounded-md text-sm hover:bg-red-600">
