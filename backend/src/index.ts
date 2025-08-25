@@ -18,7 +18,7 @@ app.use(cookieParser());
 
 //cors
 const corsOption: CorsOptions = {
-  origin: "http://localhost:5173",
+  origin: "https://blog-tau-silk-96.vercel.app",
   credentials: true,
 };
 app.use(cors(corsOption));
