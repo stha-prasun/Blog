@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { setLoggedInUser } from "../../redux/user";
+import { useAppSelector } from "../../redux/hooks";
 import { useEffect } from "react";
 import useGetAllBlogs from "../../hooks/useGetAllBlogs";
+import axios from "axios";
+import { BLOG_API_ENDPOINT } from "../../utils/constants";
+import toast from "react-hot-toast";
+import AdminSideBar from "./AdminSideBar";
 
 const AdminPanel = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const user = useAppSelector((store) => store.User.loggedInUser);
@@ -22,34 +24,25 @@ const AdminPanel = () => {
 
   const blogs = useAppSelector((store) => store.Blogs.blogs);
 
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await axios.delete(`${BLOG_API_ENDPOINT}/delete/${id}`, {
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        toast.success(res.data.message);
+        fetchBlogs();
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
+  };
+
   return (
     <div className="flex h-screen bg-gray-50">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-lg flex flex-col">
-        <div className="p-4 border-b">
-          <h1 className="text-xl font-bold text-gray-800">Admin Panel</h1>
-          <p className="text-sm text-gray-500">Welcome, {user?.username}</p>
-        </div>
-        <nav className="flex-1 p-4 space-y-2">
-          <button className="w-full text-left p-2 rounded-lg hover:bg-gray-100 font-medium">
-            📊 Dashboard
-          </button>
-          <button
-            onClick={() => navigate("/admin/blog/add")}
-            className="w-full text-left p-2 rounded-lg hover:bg-gray-100 font-medium"
-          >
-            📝 Add Blogs
-          </button>
-        </nav>
-        <div className="p-4 border-t">
-          <button
-            onClick={() => dispatch(setLoggedInUser(null))}
-            className="w-full bg-red-500 text-white p-2 rounded-lg hover:bg-red-600 font-medium"
-          >
-            Logout
-          </button>
-        </div>
-      </aside>
+      <AdminSideBar/>
 
       {/* Main Content */}
       <main className="flex-1 p-6 overflow-y-auto">
@@ -96,7 +89,10 @@ const AdminPanel = () => {
                         >
                           Edit
                         </button>
-                        <button className="px-3 py-1 bg-red-500 text-white rounded-md text-sm hover:bg-red-600">
+                        <button
+                          onClick={() => handleDelete(blog._id)}
+                          className="px-3 py-1 bg-red-500 text-white rounded-md text-sm hover:bg-red-600"
+                        >
                           Delete
                         </button>
                       </td>
